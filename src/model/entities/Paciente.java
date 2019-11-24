@@ -2,23 +2,25 @@ package model.entities;
 
 import java.io.Serializable;
 
-public class Transtorno implements Serializable {
+public class Paciente implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
+	private Integer id;
 	private String codigo;
 	private String nome;
-	private Integer id;
+	private Transtorno transtorno;
 	
-	public Transtorno() {
+	public Paciente() {
 	}
 
-	public Transtorno(String codigo, String nome, Integer id) {
-		super();
+	public Paciente(Integer id, String codigo, String nome, Transtorno transtorno) {
+		this.id = id;
 		this.codigo = codigo;
 		this.nome = nome;
-		this.setId(id);
+		this.transtorno = transtorno;
 	}
+
 
 	public String getCodigo() {
 		return codigo;
@@ -35,7 +37,15 @@ public class Transtorno implements Serializable {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
+
+	public Transtorno getTranstorno() {
+		return transtorno;
+	}
+
+	public void setTranstorno(Transtorno transtorno) {
+		this.transtorno = transtorno;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -60,7 +70,7 @@ public class Transtorno implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Transtorno other = (Transtorno) obj;
+		Paciente other = (Paciente) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -71,6 +81,6 @@ public class Transtorno implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Transtorno [codigo=" + codigo + ", nome=" + nome + ", id=" + id + "]";
+		return "Paciente [id=" + id + ", codigo=" + codigo + ", nome=" + nome + ", transtorno=" + transtorno + "]";
 	}
 }
