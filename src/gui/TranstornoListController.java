@@ -32,6 +32,9 @@ public class TranstornoListController implements Initializable {
 	
 	@FXML
 	private TableView<Transtorno> tableViewTranstorno;
+	
+	@FXML
+	private TableColumn<Transtorno, Integer> tableColumnId;
 
 	@FXML
 	private TableColumn<Transtorno, String> tableColumnCodigo;
@@ -46,7 +49,7 @@ public class TranstornoListController implements Initializable {
 
 	@FXML
 	public void onBtNewAction(ActionEvent event) {
-		createDialogForm("/gui/TranstornoForm.fxml", Utils.currentStage(event));
+		createDialogForm(new Transtorno(), "/gui/TranstornoForm.fxml", Utils.currentStage(event));
 	}
 
 	@Override
@@ -60,6 +63,7 @@ public class TranstornoListController implements Initializable {
 
 	private void initializeNodes() {
 
+		tableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
 		tableColumnCodigo.setCellValueFactory(new PropertyValueFactory<>("codigo"));
 		tableColumnNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
 
@@ -78,10 +82,14 @@ public class TranstornoListController implements Initializable {
 		tableViewTranstorno.setItems(obsList);
 	}
 	
-	private void createDialogForm(String absoluteName, Stage parentStage) {
+	private void createDialogForm(Transtorno transtorno, String absoluteName, Stage parentStage) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			Pane pane = loader.load();
+			
+			TranstornoFormController controller = loader.getController();
+			controller.setTranstorno(transtorno);
+			controller.updateFormData();
 			
 			Stage dialogStage = new Stage();
 			dialogStage.setTitle("Preencha os dados do transtorno");

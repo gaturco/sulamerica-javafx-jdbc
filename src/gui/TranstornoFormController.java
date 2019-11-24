@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import model.entities.Transtorno;
 
 public class TranstornoFormController implements Initializable {
 
@@ -33,6 +34,11 @@ public class TranstornoFormController implements Initializable {
 	@FXML
 	private Button btCancelar;
 	
+	private Transtorno entity;
+	
+	public void setTranstorno(Transtorno entity) {
+		this.entity = entity;
+	}
 	
 	@FXML
 	public void onBtSalvarAction() {
@@ -44,7 +50,6 @@ public class TranstornoFormController implements Initializable {
 		System.out.println("onBtCancelarAction");
 	}
 	
-	
 	private void initializeNodes() {
 		Constraints.setTextFieldInteger(txtId);
 		Constraints.setTextFieldMaxLength(txtCodigo, 3);
@@ -55,4 +60,14 @@ public class TranstornoFormController implements Initializable {
 	public void initialize(URL url, ResourceBundle rb) {
 		initializeNodes();
 	}
+	
+	public void updateFormData() {
+		if (entity == null) {
+			throw new IllegalStateException("Entidade nula");
+		}
+		txtId.setText(String.valueOf(entity.getId()));
+		txtCodigo.setText(entity.getCodigo());
+		txtNome.setText(entity.getNome());
+	}
+	
 }
