@@ -13,4 +13,12 @@ public class TranstornoService {
 	public List<Transtorno> findAll() {
 		return dao.findAll();
 	}
+	
+	public void salvarOuAtualizar(Transtorno transtorno) {
+		if (transtorno.getId() == null) {
+			dao.insert(transtorno);
+		} else {
+			dao.update(transtorno);
+		}
+	}
 }

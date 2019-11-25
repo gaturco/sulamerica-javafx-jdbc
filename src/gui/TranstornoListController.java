@@ -89,6 +89,7 @@ public class TranstornoListController implements Initializable {
 			
 			TranstornoFormController controller = loader.getController();
 			controller.setTranstorno(transtorno);
+			controller.setTranstornoService(new TranstornoService());
 			controller.updateFormData();
 			
 			Stage dialogStage = new Stage();
@@ -100,7 +101,7 @@ public class TranstornoListController implements Initializable {
 			dialogStage.showAndWait();
 			
 		} catch (IOException e) {
-			Alerts.showAlerts("IOException", "Erro ao carregar a tela", e.getMessage(), AlertType.ERROR);
+			Alerts.showAlert("IOException", "Erro ao carregar a tela", e.getMessage(), AlertType.ERROR);
 		}
 	}
 }

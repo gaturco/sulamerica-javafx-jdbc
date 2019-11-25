@@ -3,13 +3,19 @@ package gui;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import db.DbException;
+import gui.util.Alerts;
 import gui.util.Constraints;
+import gui.util.Utils;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import model.entities.Transtorno;
+import model.services.TranstornoService;
 
 public class TranstornoFormController implements Initializable {
 
@@ -36,18 +42,37 @@ public class TranstornoFormController implements Initializable {
 	
 	private Transtorno entity;
 	
+	private TranstornoService service;
+	
 	public void setTranstorno(Transtorno entity) {
 		this.entity = entity;
 	}
 	
-	@FXML
-	public void onBtSalvarAction() {
-		System.out.println("onBtSalvarAction");
+	public void setTranstornoService(TranstornoService service) {
+		this.service = service;
 	}
 	
 	@FXML
-	public void onBtCancelarAction() {
-		System.out.println("onBtCancelarAction");
+	public void onBtSalvarAction(ActionEvent event) {
+		if (entity == null) {
+			throw new IllegalStateException("Entidade nula");
+		}
+		if (service == null) {
+			throw new IllegalStateException("Service nula");
+		}
+		try {
+			entity = getFormData();
+			service.salvarOuAtualizar(entity);
+			Utils.currentStage(event).close();
+			
+		} catch (DbException e) {
+			Alerts.showAlert("Erro ao salvar o transtorno", null, e.getMessage(), AlertType.ERROR);
+		}
+	}
+	
+	@FXML
+	public void onBtCancelarAction(ActionEvent event) {
+		Utils.currentStage(event).close();
 	}
 	
 	private void initializeNodes() {
@@ -68,6 +93,15 @@ public class TranstornoFormController implements Initializable {
 		txtId.setText(String.valueOf(entity.getId()));
 		txtCodigo.setText(entity.getCodigo());
 		txtNome.setText(entity.getNome());
+	}
+	
+	private Transtorno getFormData() {
+		Transtorno transtorno = new Transtorno();
+		transtorno.setId(Utils.tryParseToInt(txtId.getText()));
+		transtorno.setNome(txtNome.getText());
+		transtorno.setCodigo(txtCodigo.getText());
+		
+		return transtorno;
 	}
 	
 }
